@@ -1,0 +1,90 @@
+#############################
+#
+#      BOOK-CONTROLLER
+#
+#############################
+
+### Add Book
+POST localhost:8080/library/admin/book-controller/add
+Content-Type: application/json
+
+{
+  "title": "Python",
+  "author": "Vali",
+  "category": "Dasturlash"
+}
+
+### Remove Book
+DELETE localhost:8080/library/admin/book-controller/remove/1
+
+### All Books
+GET localhost:8080/library/admin/book-controller/all
+
+### Search Book
+GET localhost:8080/library/admin/book-controller/search?keyword=Java
+
+
+
+#############################
+#
+#      PROFILE-CONTROLLER
+#
+#############################
+
+### All profiles
+GET localhost:8080/library/admin/profile-controller/all-profile
+
+### Search by fullname
+GET localhost:8080/library/admin/profile-controller/search?keyword=staff
+
+### Add Student
+POST localhost:8080/library/admin/profile-controller/add
+Content-Type: application/json
+
+{
+  "fullName": "Alish_Aliyev",
+  "username": "alibek",
+  "password": "1234567",
+  "role": "STAFF"
+
+}
+
+### Change Status
+PUT localhost:8080/library/admin/profile-controller/change-status/2
+Content-Type: application/json
+
+{
+  "status": "BLOCKED"
+}
+
+
+
+#############################
+#
+# STUDENT-PROFILE-CONTROLLER
+#
+#############################
+
+### Add Student
+POST localhost:8080/library/admin/student-profile-controller/add-student
+Content-Type: application/json
+
+{
+  "fullName": "Studentjon Studentov",
+  "username": "student",
+  "password": "1234567"
+}
+
+### Search Student
+GET localhost:8080/library/admin/student-profile-controller/search?keyword=stud
+
+### Change Student Status
+PUT localhost:8080/library/admin/student-profile-controller/3/status
+Content-Type: application/json
+
+{
+  "status": "BLOCKED"
+}
+
+### Get Student Books
+GET localhost:8080/library/admin/student-profile-controller/1/books
