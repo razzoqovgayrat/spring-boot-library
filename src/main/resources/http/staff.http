@@ -1,5 +1,56 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+#############################
+#
+#      BOOK-CONTROLLER
+#
+#############################
 
-###
+### Add Book
+POST localhost:8080/library/staff/book-controller/add
+Content-Type: application/json
+
+{
+  "title": "Go",
+  "author": "Eshmat",
+  "category": "Dasturlash"
+}
+
+### Remove Book
+DELETE localhost:8080/library/staff/book-controller/remove/1
+
+### All Books
+GET localhost:8080/library/staff/book-controller/all
+
+### Search Book
+GET localhost:8080/library/staff/book-controller/search?keyword=Java
+
+
+
+#############################
+#
+# STUDENT-PROFILE-CONTROLLER
+#
+#############################
+
+### Add Student
+POST localhost:8080/library/staff/student-profile-controller/add-student
+Content-Type: application/json
+
+{
+  "fullName": "Studentjon Studentov",
+  "username": "student",
+  "password": "1234567"
+}
+
+### Search Student
+GET localhost:8080/library/staff/student-profile-controller/search?keyword=stud
+
+### Change Student Status
+PUT localhost:8080/library/staff/student-profile-controller/3/status
+Content-Type: application/json
+
+{
+  "status": "ACTIVE"
+}
+
+### Get Student Books
+GET localhost:8080/library/staff/student-profile-controller/1/books

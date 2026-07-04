@@ -83,7 +83,7 @@ PUT localhost:8080/library/admin/student-profile-controller/3/status
 Content-Type: application/json
 
 {
-  "status": "BLOCKED"
+  "status": "ACTIVE"
 }
 
 ### Get Student Books

@@ -3,3 +3,18 @@
 # STUDENT-PROFILE-CONTROLLER
 #
 #############################
+
+### All books
+GET localhost:8080/library/student/books
+
+### Search books
+GET localhost:8080/library/student/books/search?keyword=java
+
+### Take book
+POST localhost:8080/library/student/books/take/2?studentId=3
+
+### Return book
+POST localhost:8080/library/student/books/return/4?studentId=3
+
+### Books on hand
+GET localhost:8080/library/student/books/on-hand?studentId=3
