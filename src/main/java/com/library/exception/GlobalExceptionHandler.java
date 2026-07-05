@@ -1,11 +1,15 @@
 package com.library.exception;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -40,11 +44,25 @@ public class GlobalExceptionHandler {
                 "An unexpected error occurred: " + e.getMessage());
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException e) {
+        List<String> validationErrors = new LinkedList<>();
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            validationErrors.add(fieldError.getDefaultMessage());
+        }
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("Validation Failed")
+                .errors(validationErrors)
+                .build();
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
     private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status, String message) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(status.value())
-                .error(status.getReasonPhrase())
                 .message(message)
                 .build();
         return ResponseEntity.status(status).body(errorResponse);
