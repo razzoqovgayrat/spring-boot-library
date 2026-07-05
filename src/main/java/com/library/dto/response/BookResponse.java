@@ -16,6 +16,7 @@ public class BookResponse {
     private String title;
     private String author;
     private String category;
+    private boolean visible;
 
     public static BookResponse fromEntity(Book book) {
         return BookResponse.builder()
@@ -23,6 +24,7 @@ public class BookResponse {
                 .title(book.getTitle())
                 .author(book.getAuthor())
                 .category(book.getCategory())
+                .visible(book.isVisible())
                 .build();
     }
 }

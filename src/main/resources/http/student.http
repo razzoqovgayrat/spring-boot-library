@@ -11,10 +11,13 @@ GET localhost:8080/library/student/books
 GET localhost:8080/library/student/search-books?keyword=java
 
 ### Take book
-POST localhost:8080/library/student/take-book/5?studentId=3
+POST localhost:8080/library/student/take-book/1?studentId=5
 
 ### Return book
-POST localhost:8080/library/student/return-book/4?studentId=3
+PUT localhost:8080/library/student/return-book/4?studentId=5
 
 ### Books on hand
-GET localhost:8080/library/student/books-on-hand?studentId=3
+GET localhost:8080/library/student/books-on-hand?studentId=5
+
+### Delte profile
+DELETE localhost:8080/library/student/delete-profile/5

@@ -4,6 +4,7 @@ import com.library.dto.request.AddStudentRequest;
 import com.library.dto.request.StatusUpdateRequest;
 import com.library.dto.response.StudentBookResponse;
 import com.library.dto.response.UserResponse;
+import com.library.service.ProfileService;
 import com.library.service.StudentProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class AdminStudentProfileController {
-
     private final StudentProfileService studentProfileService;
+    private final ProfileService profileService;
 
     @PostMapping("/add-student")
     public ResponseEntity<UserResponse> addStudent(@Valid @RequestBody AddStudentRequest request) {
@@ -38,15 +39,15 @@ public class AdminStudentProfileController {
         return ResponseEntity.ok(students);
     }
 
-    @PutMapping("/{id}/status")
+    @PutMapping("/status/{id}")
     public ResponseEntity<UserResponse> changeStudentStatus(
-            @PathVariable Long id, @Valid @RequestParam StatusUpdateRequest request) {
+            @PathVariable Long id, @Valid @RequestBody StatusUpdateRequest request) {
         UserResponse response = studentProfileService.changeStudentStatus(id, request);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/books/{studentId}")
-    public ResponseEntity<List<StudentBookResponse>> getStudentBooks(@PathVariable Long studentId) {
+    @GetMapping("/student-books/{studentId}")
+    public ResponseEntity<List<StudentBookResponse>> getStudentBooksByStudentId(@PathVariable Long studentId) {
         List<StudentBookResponse> books = studentProfileService.getStudentBooks(studentId);
         return ResponseEntity.ok(books);
     }
@@ -55,5 +56,11 @@ public class AdminStudentProfileController {
     public ResponseEntity<List<StudentBookResponse>> getAllStudentBooks() {
         List<StudentBookResponse> books = studentProfileService.getAllStudentBooks();
         return ResponseEntity.ok(books);
+    }
+
+    @DeleteMapping("/delete-profile/{studentId}")
+    public ResponseEntity<UserResponse> deleteProfile(@PathVariable Long studentId) {
+        UserResponse response = profileService.removeStudent(studentId);
+        return ResponseEntity.ok(response);
     }
 }

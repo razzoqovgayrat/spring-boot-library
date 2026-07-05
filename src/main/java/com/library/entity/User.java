@@ -38,4 +38,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private UserStatus status;
+
+    @Column(name = "visible", nullable = false)
+    private boolean visible;
 }

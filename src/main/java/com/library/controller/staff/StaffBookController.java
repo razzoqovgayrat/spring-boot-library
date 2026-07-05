@@ -17,15 +17,16 @@ import java.util.List;
 public class StaffBookController {
     private final BookService bookService;
 
-    @PostMapping("/add")
-    public ResponseEntity<BookResponse> addBook(@Valid @RequestBody BookRequest request) {
-        BookResponse response = bookService.addBook(request);
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<BookResponse> addBook(
+            @PathVariable Long userId, @Valid @RequestBody BookRequest request) {
+        BookResponse response = bookService.addBook(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping("/remove/{id}")
-    public ResponseEntity<String> removeBook(@PathVariable Long id) {
-        bookService.removeBook(id);
+    @DeleteMapping("/remove")
+    public ResponseEntity<String> removeBook(@RequestParam Long bookId, @RequestParam Long userId) {
+        bookService.removeBook(bookId, userId);
         return ResponseEntity.ok("Book removed successfully");
     }
 

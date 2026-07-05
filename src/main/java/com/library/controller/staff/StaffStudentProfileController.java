@@ -32,22 +32,21 @@ public class StaffStudentProfileController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<UserResponse>> searchStudents(
-            @RequestParam(required = false) String keyword) {
+    public ResponseEntity<List<UserResponse>> searchStudents(@RequestParam(required = false) String keyword) {
         List<UserResponse> students = studentProfileService.searchStudents(keyword);
         return ResponseEntity.ok(students);
     }
 
-    @PutMapping("/{id}/status")
+    @PutMapping("/status/{id}")
     public ResponseEntity<UserResponse> changeStudentStatus(
-            @PathVariable Long id, @Valid @RequestParam StatusUpdateRequest request) {
+            @PathVariable Long id, @Valid @RequestBody StatusUpdateRequest request) {
         UserResponse response = studentProfileService.changeStudentStatus(id, request);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}/books")
-    public ResponseEntity<List<StudentBookResponse>> getStudentBooks(@PathVariable Long id) {
-        List<StudentBookResponse> books = studentProfileService.getStudentBooks(id);
+    @GetMapping("/student-books/{studentId}")
+    public ResponseEntity<List<StudentBookResponse>> getStudentBooksByStudentId(@PathVariable Long studentId) {
+        List<StudentBookResponse> books = studentProfileService.getStudentBooks(studentId);
         return ResponseEntity.ok(books);
     }
 

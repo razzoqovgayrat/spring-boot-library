@@ -4,24 +4,24 @@
 #
 #############################
 
-### Add Book
-POST localhost:8080/library/staff/book-controller/add
+### Create Book
+POST localhost:8080/library/admin/book-controller/add/3
 Content-Type: application/json
 
 {
-  "title": "Go",
-  "author": "Eshmat",
+  "title": "C++",
+  "author": "Toshmat",
   "category": "Dasturlash"
 }
 
-### Remove Book
-DELETE localhost:8080/library/staff/book-controller/remove/1
-
 ### All Books
-GET localhost:8080/library/staff/book-controller/all-books
+GET localhost:8080/library/admin/book-controller/all-books
 
-### Search Book
-GET localhost:8080/library/staff/book-controller/search?keyword=Java
+### Search Book by name
+GET localhost:8080/library/admin/book-controller/search?keyword=o
+
+### Remove Book
+DELETE localhost:8080/library/admin/book-controller/remove?bookId=2&userId=1
 
 
 
@@ -36,27 +36,30 @@ POST localhost:8080/library/staff/student-profile-controller/add-student
 Content-Type: application/json
 
 {
-  "fullName": "Studentjon Studentov",
-  "username": "student",
+  "fullName": "Ali Aliyev",
+  "username": "alibek",
   "password": "1234567"
 }
 
 ### All Students
-GET localhost:8080/library/admin/student-profile-controller/all-student
+GET localhost:8080/library/staff/student-profile-controller/all-student
 
 ### Search Student
-GET localhost:8080/library/staff/student-profile-controller/search?keyword=stud
+GET localhost:8080/library/staff/student-profile-controller/search?keyword=ali
 
 ### Change Student Status
-PUT localhost:8080/library/staff/student-profile-controller/3/status
+PUT localhost:8080/library/staff/student-profile-controller/status/3
 Content-Type: application/json
 
 {
-  "status": "ACTIVE"
+  "status": "BLOCKED"
 }
 
-### Get Student Books
-GET localhost:8080/library/staff/student-profile-controller/1/books
+### Get Student Books by studentId
+GET localhost:8080/library/staff/student-profile-controller/student-books/3
 
 ### Get All Student Books
 GET localhost:8080/library/staff/student-profile-controller/all-student-books
+
+### Delte profile
+DELETE localhost:8080/library/staff/student-profile-controller/delete-profile/5

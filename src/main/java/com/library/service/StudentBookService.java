@@ -2,6 +2,7 @@ package com.library.service;
 
 import com.library.dto.response.BookResponse;
 import com.library.dto.response.StudentBookResponse;
+import com.library.dto.response.UserResponse;
 import com.library.entity.Book;
 import com.library.entity.StudentBook;
 import com.library.entity.User;
@@ -74,14 +75,14 @@ public class StudentBookService {
     }
 
     public List<StudentBookResponse> getBooksOnHand(Long studentId) {
-        getActiveStudentOrThrow(studentId);
         return studentBookRepository.findByStudentId(studentId).stream()
+                .filter(studentBook -> studentBook.getStatus().equals(BookStatus.TAKEN))
                 .map(StudentBookResponse::fromEntity).toList();
     }
 
     private User getActiveStudentOrThrow(Long studentId) {
         User student = userRepository.findById(studentId)
-                .filter(u -> u.getRole() == Role.STUDENT)
+                .filter(u -> u.getRole() == Role.STUDENT && u.isVisible())
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
 
         if (student.getStatus() == UserStatus.BLOCKED) {
