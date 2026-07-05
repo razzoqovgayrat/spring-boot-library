@@ -1,0 +1,43 @@
+package com.library.controller.admin;
+
+import com.library.dto.request.BookRequest;
+import com.library.dto.response.BookResponse;
+import com.library.service.BookService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RequestMapping("/library/admin/book-controller")
+@RestController
+@RequiredArgsConstructor
+public class AdminBookController {
+    private final BookService bookService;
+
+    @PostMapping("/add")
+    public ResponseEntity<BookResponse> addBook(@Valid @RequestBody BookRequest request) {
+        BookResponse response = bookService.addBook(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<String> removeBook(@PathVariable Long id) {
+        bookService.removeBook(id);
+        return ResponseEntity.ok("Book removed successfully");
+    }
+
+    @GetMapping("/all-books")
+    public ResponseEntity<List<BookResponse>> getAllBooks() {
+        List<BookResponse> books = bookService.getAllBooks();
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<BookResponse>> searchBooks(@RequestParam(required = false) String keyword) {
+        List<BookResponse> books = bookService.searchBooks(keyword);
+        return ResponseEntity.ok(books);
+    }
+}

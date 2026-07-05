@@ -4,21 +4,21 @@
 #
 #############################
 
-### Add Book
+### Create Book
 POST localhost:8080/library/admin/book-controller/add
 Content-Type: application/json
 
 {
-  "title": "Python",
-  "author": "Vali",
+  "title": "Go",
+  "author": "Eshmat",
   "category": "Dasturlash"
 }
 
 ### Remove Book
-DELETE localhost:8080/library/admin/book-controller/remove/1
+DELETE localhost:8080/library/admin/book-controller/remove/2
 
 ### All Books
-GET localhost:8080/library/admin/book-controller/all
+GET localhost:8080/library/admin/book-controller/all-books
 
 ### Search Book
 GET localhost:8080/library/admin/book-controller/search?keyword=Java
@@ -37,15 +37,15 @@ GET localhost:8080/library/admin/profile-controller/all-profile
 ### Search by fullname
 GET localhost:8080/library/admin/profile-controller/search?keyword=staff
 
-### Add Student
+### Add Profile
 POST localhost:8080/library/admin/profile-controller/add
 Content-Type: application/json
 
 {
-  "fullName": "Alish_Aliyev",
-  "username": "alibek",
+  "fullName": "Valish_Valiyev",
+  "username": "valibek",
   "password": "1234567",
-  "role": "STAFF"
+  "role": "STUDENT"
 
 }
 
@@ -70,21 +70,22 @@ POST localhost:8080/library/admin/student-profile-controller/add-student
 Content-Type: application/json
 
 {
-  "fullName": "Studentjon Studentov",
-  "username": "student",
+  "fullName": "Eshmatjon Eshmatov",
+  "username": "eshmat",
   "password": "1234567"
 }
+
+### All Students
+GET localhost:8080/library/admin/student-profile-controller/all-student
 
 ### Search Student
 GET localhost:8080/library/admin/student-profile-controller/search?keyword=stud
 
 ### Change Student Status
-PUT localhost:8080/library/admin/student-profile-controller/3/status
-Content-Type: application/json
-
-{
-  "status": "ACTIVE"
-}
+PUT localhost:8080/library/admin/student-profile-controller/3/status?status=ACTIVE
 
 ### Get Student Books
 GET localhost:8080/library/admin/student-profile-controller/1/books
+
+### Get All Student Books
+GET localhost:8080/library/admin/student-profile-controller/all-student-books

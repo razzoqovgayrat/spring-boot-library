@@ -18,7 +18,7 @@ Content-Type: application/json
 DELETE localhost:8080/library/staff/book-controller/remove/1
 
 ### All Books
-GET localhost:8080/library/staff/book-controller/all
+GET localhost:8080/library/staff/book-controller/all-books
 
 ### Search Book
 GET localhost:8080/library/staff/book-controller/search?keyword=Java
@@ -41,6 +41,9 @@ Content-Type: application/json
   "password": "1234567"
 }
 
+### All Students
+GET localhost:8080/library/admin/student-profile-controller/all-student
+
 ### Search Student
 GET localhost:8080/library/staff/student-profile-controller/search?keyword=stud
 
@@ -54,3 +57,6 @@ Content-Type: application/json
 
 ### Get Student Books
 GET localhost:8080/library/staff/student-profile-controller/1/books
+
+### Get All Student Books
+GET localhost:8080/library/staff/student-profile-controller/all-student-books
