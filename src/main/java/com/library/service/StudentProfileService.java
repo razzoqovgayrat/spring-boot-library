@@ -32,7 +32,7 @@ public class StudentProfileService {
                 .fullName(request.getFullName())
                 .username(request.getUsername())
                 .password(request.getPassword())
-                .role(Role.STUDENT)
+                .role(Role.ROLE_STUDENT)
                 .status(UserStatus.ACTIVE)
                 .build();
 
@@ -40,13 +40,13 @@ public class StudentProfileService {
     }
 
     public List<UserResponse> getAllStudents() {
-        return userRepository.findByRole(Role.STUDENT).stream()
+        return userRepository.findByRole(Role.ROLE_STUDENT).stream()
                 .map(UserResponse::fromEntity).toList();
     }
 
     public List<UserResponse> searchStudents(String keyword) {
         String term = keyword == null ? "" : keyword;
-        return userRepository.findByRoleAndFullNameContainingIgnoreCase(Role.STUDENT, term).stream()
+        return userRepository.findByRoleAndFullNameContainingIgnoreCase(Role.ROLE_STUDENT, term).stream()
                 .map(UserResponse::fromEntity)
                 .toList();
     }
@@ -72,7 +72,7 @@ public class StudentProfileService {
 
     private User getStudentOrThrow(Long id) {
         return userRepository.findById(id)
-                .filter(u -> u.getRole() == Role.STUDENT)
+                .filter(u -> u.getRole() == Role.ROLE_STUDENT)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
     }
 }

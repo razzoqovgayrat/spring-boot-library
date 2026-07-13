@@ -4,6 +4,10 @@ import com.library.dto.request.AddProfileRequest;
 import com.library.dto.request.StatusUpdateRequest;
 import com.library.dto.response.UserResponse;
 import com.library.service.ProfileService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,20 +16,25 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/library/admin/profile-controller")
+@RequestMapping("/admin/profile")
 @RestController
 @RequiredArgsConstructor
 public class AdminProfileController {
 
     private final ProfileService profileService;
 
-    @PostMapping("/add")
+    @PostMapping()
+    @Operation(summary = "Add new user")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "created"),
+            @ApiResponse(responseCode = "404", description = "bad request")
+    })
     public ResponseEntity<UserResponse> addProfile(@Valid @RequestBody AddProfileRequest request) {
         UserResponse response = profileService.addProfile(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/all-profile")
+    @GetMapping()
     public ResponseEntity<List<UserResponse>> getAllProfiles() {
         List<UserResponse> profiles = profileService.getAllProfiles();
         return ResponseEntity.ok(profiles);
@@ -38,15 +47,22 @@ public class AdminProfileController {
         return ResponseEntity.ok(profiles);
     }
 
-    @PutMapping("/change-status/{id}")
+    @PutMapping("/{id}")
+    @Operation(summary = "Change profile status")
     public ResponseEntity<UserResponse> changeProfileStatus(
             @PathVariable Long id, @Valid @RequestBody StatusUpdateRequest request) {
         UserResponse response = profileService.changeProfileStatus(id, request);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/delete-profile/{userId}")
-    public ResponseEntity<UserResponse> deleteProfile(@PathVariable Long userId) {
+    @DeleteMapping("/{userId}")
+    @Operation(summary = "delete profile")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "User o'chirildi"),
+            @ApiResponse(responseCode = "404", description = "Topilmadi")
+    })
+    public ResponseEntity<UserResponse> deleteProfile(@Parameter(description = "Foydalanuvchi ID", example = "1")
+                                                      @PathVariable Long userId) {
         UserResponse response = profileService.removeProfile(userId);
         return ResponseEntity.ok(response);
     }

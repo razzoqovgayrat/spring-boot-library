@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProfileService {
 
-    private final List<Role> ROLES = List.of(Role.ADMIN, Role.STAFF);
+    private final List<Role> ROLES = List.of(Role.ROLE_ADMIN, Role.ROLE_STAFF);
     private final UserRepository userRepository;
 
     public UserResponse addProfile(AddProfileRequest request) {
@@ -26,7 +26,7 @@ public class ProfileService {
             throw new DuplicateResourceException("Username '" + request.getUsername() + "' is already taken");
         }
 
-        if (!(request.getRole() == Role.ADMIN || request.getRole() == Role.STAFF)) {
+        if (!(request.getRole() == Role.ROLE_ADMIN || request.getRole() == Role.ROLE_STAFF)) {
             throw new IllegalArgumentException("Role must be ADMIN or STAFF for profile creation");
         }
 
@@ -62,7 +62,7 @@ public class ProfileService {
 
     public UserResponse removeStudent(Long studentId) {
         User user = userRepository.findById(studentId).filter(User::isVisible)
-                .filter(user1 -> user1.getRole().equals(Role.STUDENT))
+                .filter(user1 -> user1.getRole().equals(Role.ROLE_STUDENT))
                 .orElseThrow(() -> new ResourceNotFoundException("student not found with this id or already deleted"));
         user.setVisible(false);
         userRepository.save(user);

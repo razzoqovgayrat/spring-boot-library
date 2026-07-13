@@ -21,7 +21,7 @@ import java.util.List;
 public class BookService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final List<Role> ROLES = List.of(Role.ADMIN, Role.STAFF);
+    private final List<Role> ROLES = List.of(Role.ROLE_ADMIN, Role.ROLE_STAFF);
 
     public BookResponse addBook(BookRequest request, Long userId) {
         validationProfile(userId);

@@ -2,7 +2,6 @@ package com.library.service;
 
 import com.library.dto.response.BookResponse;
 import com.library.dto.response.StudentBookResponse;
-import com.library.dto.response.UserResponse;
 import com.library.entity.Book;
 import com.library.entity.StudentBook;
 import com.library.entity.User;
@@ -82,7 +81,7 @@ public class StudentBookService {
 
     private User getActiveStudentOrThrow(Long studentId) {
         User student = userRepository.findById(studentId)
-                .filter(u -> u.getRole() == Role.STUDENT && u.isVisible())
+                .filter(u -> u.getRole() == Role.ROLE_STUDENT && u.isVisible())
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
 
         if (student.getStatus() == UserStatus.BLOCKED) {

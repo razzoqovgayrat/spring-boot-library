@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/library/staff/book-controller")
+@RequestMapping("/staff/book")
 @RestController
 @RequiredArgsConstructor
 public class StaffBookController {
     private final BookService bookService;
 
-    @PostMapping("/add/{userId}")
+    @PostMapping("/{userId}")
     public ResponseEntity<BookResponse> addBook(
             @PathVariable Long userId, @Valid @RequestBody BookRequest request) {
         BookResponse response = bookService.addBook(request, userId);
@@ -30,7 +30,7 @@ public class StaffBookController {
         return ResponseEntity.ok("Book removed successfully");
     }
 
-    @GetMapping("/all-books")
+    @GetMapping()
     public ResponseEntity<List<BookResponse>> getAllBooks() {
         List<BookResponse> books = bookService.getAllBooks();
         return ResponseEntity.ok(books);

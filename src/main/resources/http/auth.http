@@ -1,0 +1,38 @@
+### register
+POST localhost:8080/register
+Content-Type: application/json
+
+{
+  "fullName": "Ali",
+  "username": "ali@gmail.com",
+  "role": "ROLE_STUDENT",
+  "password": "123456"
+}
+
+### login
+POST localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "ali@gmail.com",
+  "password": "123456",
+  "deviceId": "123.456.789:0000"
+}
+
+### log out
+GET localhost:8080/login-out
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9TVFVERU5UIiwidXNlcm5hbWUiOiJhbGlAZ21haWwuY29tIiwic3ViIjoiYWxpQGdtYWlsLmNvbSIsImlhdCI6MTc4Mzk2Nzk4NywiZXhwIjoxNzg0ODMxOTg3fQ.6hnPWc-2G0O-oTKkOaCONP5sOyBQIl6rbGOs5WNOeZI
+Content-Type: application/json
+
+{
+  "deviceId": "123.456.789:0000"
+}
+
+### refresh token
+POST localhost:8080/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "apple",
+  "deviceId": "123.456.789:0000"
+}
