@@ -2,27 +2,36 @@ package com.library.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Schema(description = "Book info")
-public class BookRequest {
+import java.util.Set;
 
-    @NotBlank(message = "Title is required")
-    @Size(max = 200, message = "Title must be at most 200 characters")
-    @Schema(description = "Book title", example = "Java")
-    private String title;
+@Builder
+public record BookRequest(
 
-    @NotBlank(message = "Author is required")
-    @Size(max = 150, message = "Author must be at most 150 characters")
-    @Schema(description = "Book author", example = "Vali Valiyev")
-    private String author;
+        @Schema(example = "O'tkan kunlar")
+        @NotBlank(message = "title bo'sh bo'lmasligi kerak")
+        String title,
 
-    @Schema(description = "Book category", example = "Dasturlash")
-    private String category;
+        @Schema(example = "978-9943-05-123-4")
+        @NotBlank(message = "isbn bo'sh bo'lmasligi kerak")
+        String isbn,
+
+        @Schema(example = "O'zbek adabiyotining birinchi romani")
+        String description,
+
+        @Schema(example = "1925")
+        @Positive(message = "publishedYear musbat son bo'lishi kerak")
+        Integer publishedYear,
+
+        @Schema(description = "Muallif id'lari", example = "[1, 2]")
+        @NotEmpty(message = "kamida bitta muallif tanlanishi kerak")
+        Set<Long> authorIds,
+
+        @Schema(description = "Kategoriya id'lari", example = "[3]")
+        @NotEmpty(message = "kamida bitta kategoriya tanlanishi kerak")
+        Set<Long> categoryIds
+) {
 }

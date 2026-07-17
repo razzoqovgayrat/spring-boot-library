@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,30 +23,29 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
-    private final UserDetailsService userDetailsService;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     public static final String[] AUTH_WHITELIST = {
-            "/register",
-            "/login",
-            "/refresh-token"
+            "/auth/login",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
     };
 
     @Bean
-    public AuthenticationProvider authenticationProvider(BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AuthenticationProvider authenticationProvider(BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailsService) {
         final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return daoAuthenticationProvider;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthenticationFilter) {
         httpSecurity.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
                     .requestMatchers(AUTH_WHITELIST).permitAll()
                     .anyRequest()
                     .authenticated();
-        }).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // .formLogin(Customizer.withDefaults())
+        }).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.cors(httpSecurityCorsConfigurer -> {

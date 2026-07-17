@@ -1,52 +1,61 @@
 package com.library.controller;
 
-import com.library.dto.request.LogOutRequest;
 import com.library.dto.request.LoginRequest;
+import com.library.dto.request.LogoutRequest;
 import com.library.dto.request.RefreshTokenRequest;
-import com.library.dto.request.RegisterRequest;
-import com.library.dto.response.TokenResponse;
+import com.library.dto.response.ApiResponse;
+import com.library.dto.response.RefreshTokenResponse;
 import com.library.dto.response.UserResponse;
 import com.library.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping()
 @RestController
+@RequestMapping(AuthController.BASE_URL)
 @RequiredArgsConstructor
+@Tag(name = "Auth", description = "Ro'yxatdan o'tish, login, token yangilash, logout")
 public class AuthController {
 
+    public final static String BASE_URL = "/auth";
     private final AuthService authService;
 
-    @Operation(description = "registration")
-    @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        UserResponse response = authService.register(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    @Operation(description = "login")
+    @Operation(summary = "Login — access va refresh token qaytaradi")
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) {
-        UserResponse response = authService.authorization(loginRequest, httpServletRequest);
-        return ResponseEntity.ok(response);
+    public ApiResponse<UserResponse> login(
+            @Valid @RequestBody LoginRequest request,
+            @RequestHeader(value = HttpHeaders.USER_AGENT, required = false) String userAgent
+    ) {
+        String deviceName = userAgent != null ? userAgent : "Unknown device";
+        return authService.login(request, deviceName);
     }
 
-    @Operation(description = "refresh token")
-    @PostMapping("/refresh-token")
-    public ResponseEntity<TokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest, HttpServletRequest httpServletRequest) {
-        TokenResponse response = authService.refreshToken(refreshTokenRequest, httpServletRequest);
-        return ResponseEntity.ok(response);
+    @Operation(summary = "Refresh token orqali yangi access token olish")
+    @PostMapping("/refresh")
+    @SecurityRequirement(name = "bearerAuth")
+    public ApiResponse<RefreshTokenResponse> refresh(@Valid @RequestBody RefreshTokenRequest request) {
+        return authService.refresh(request);
     }
 
-    @Operation(description = "login out")
-    @GetMapping("/login-out")
-    public ResponseEntity<String> loginOut(@Valid @RequestBody LogOutRequest logOutRequest) {
-        authService.logout(logOutRequest);
-        return ResponseEntity.ok("successfully logout");
+    @Operation(summary = "Joriy qurilmadan chiqish")
+    @PostMapping("/logout")
+    @SecurityRequirement(name = "bearerAuth")
+    public ApiResponse<Void> logout(
+            Authentication authentication,
+            @Valid @RequestBody LogoutRequest request
+    ) {
+        return authService.logout(authentication.getName(), request);
+    }
+
+    @Operation(summary = "Barcha qurilmalardan chiqish")
+    @PostMapping("/logout-all")
+    @SecurityRequirement(name = "bearerAuth")
+    public ApiResponse<Void> logoutAll(Authentication authentication) {
+        return authService.logoutAll(authentication.getName());
     }
 }

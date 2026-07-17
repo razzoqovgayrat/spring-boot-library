@@ -1,70 +1,102 @@
 package com.library.exception;
 
+import com.library.dto.response.ApiResponse;
+import jakarta.persistence.OptimisticLockException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException e) {
-        return buildResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    public ApiResponse<Void> handleAppBadRequestException(ResourceNotFoundException e) {
+        return ApiResponse.error(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(MemberNotFoundException.class)
+    public ApiResponse<Void> handleMemberNotFoundException(MemberNotFoundException e) {
+        return ApiResponse.error(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ApiResponse<Void> handleUsernameNotFoundException(UsernameNotFoundException e) {
+        return ApiResponse.error(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(AppBadRequestException.class)
+    public ApiResponse<Void> handleAppBadRequestException(AppBadRequestException e) {
+        return ApiResponse.error(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(UserBlockedException.class)
-    public ResponseEntity<ErrorResponse> handleUserBlocked(UserBlockedException e) {
-        return buildResponse(HttpStatus.FORBIDDEN, e.getMessage());
+    public ApiResponse<Void> handleUserBlocked(UserBlockedException e) {
+        return ApiResponse.error(HttpStatus.FORBIDDEN, e.getMessage());
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<ErrorResponse> handleDuplicateResource(DuplicateResourceException e) {
-        return buildResponse(HttpStatus.CONFLICT, e.getMessage());
+    public ApiResponse<Void> handleDuplicateResource(DuplicateResourceException e) {
+        return ApiResponse.error(HttpStatus.CONFLICT, e.getMessage());
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ApiResponse<Void> handleConflictException(ConflictException e) {
+        return ApiResponse.error(HttpStatus.CONFLICT, e.getMessage());
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidCredentials(InvalidCredentialsException e) {
-        return buildResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
+    public ApiResponse<Void> handleInvalidCredentials(InvalidCredentialsException e) {
+        return ApiResponse.error(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException e) {
-        return buildResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+    public ApiResponse<Void> handleIllegalArgument(IllegalArgumentException e) {
+        return ApiResponse.error(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception e) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR,
-                "An unexpected error occurred: " + e.getMessage());
+    @ExceptionHandler(AccessDeniedException.class)
+    public ApiResponse<Void> handleAccessDenied(AccessDeniedException ex) {
+        return ApiResponse.error(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+    @ExceptionHandler(OptimisticLockException.class)
+    public ApiResponse<Void> handleOptimisticLoc(OptimisticLockException ex) {
+        return ApiResponse.error(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(LockedException.class)
+    public ApiResponse<Void> handleLockedAccount(LockedException e) {
+        return ApiResponse.error(HttpStatus.LOCKED, e.getMessage());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ApiResponse<Void> handleBadCredentials(BadCredentialsException e) {
+        return ApiResponse.error(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException e) {
+    protected ApiResponse<Void> handleValidationErrors(MethodArgumentNotValidException e) {
         List<String> validationErrors = new LinkedList<>();
+
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
             validationErrors.add(fieldError.getDefaultMessage());
         }
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .message("Validation Failed")
-                .errors(validationErrors)
-                .build();
-        return ResponseEntity.badRequest().body(errorResponse);
+
+        return ApiResponse.error(validationErrors, HttpStatus.BAD_REQUEST, "Validation Failed");
     }
 
-    private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status, String message) {
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(status.value())
-                .message(message)
-                .build();
-        return ResponseEntity.status(status).body(errorResponse);
+    @ExceptionHandler(Exception.class)
+    public ApiResponse<Void> handleGenericException(Exception e) {
+        return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR,
+                "An unexpected error occurred: " + e.getMessage());
     }
 }

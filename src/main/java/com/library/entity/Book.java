@@ -1,37 +1,55 @@
 package com.library.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "books")
-@Data
+@Table(name = "books", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_books_isbn", columnNames = "isbn")
+})
+@Getter
+@Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Book {
+@NoArgsConstructor
+public class Book extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false, length = 300)
     private String title;
 
-    @Column(name = "author", nullable = false)
-    private String author;
+    @Column(nullable = false, length = 20)
+    private String isbn;
 
-    @Column(name = "category")
-    private String category;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
-    @Column(name = "publish_date")
-    private LocalDateTime publishDate;
+    @Column(name = "published_year")
+    private Integer publishedYear;
 
-    @Column(name = "visible")
-    private boolean visible;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    @Builder.Default
+    private Set<Author> authors = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "book_categories",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    @Builder.Default
+    private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<BookCopy> copies = new ArrayList<>();
 }

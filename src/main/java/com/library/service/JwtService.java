@@ -1,6 +1,7 @@
 package com.library.service;
 
 import com.library.dto.Jwt;
+import com.library.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -21,14 +22,13 @@ public class JwtService {
     private String secretKey;
 //    private long refreshTokenLiveTime = 1000L * 3600 * 24 * 30; // 30-day
 
-    public String encode(String username, String role) {
+    public String encode(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("username", username);
-        extraClaims.put("role", role);
+        extraClaims.put("userId", user.getId());
 
         return Jwts.builder()
                 .claims(extraClaims)
-                .subject(username)
+                .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + tokenLiveTime))
                 .signWith(getSignInKey())
@@ -41,9 +41,8 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        String phone = (String) claims.get("username");
-        String role = (String) claims.get("role");
-        return new Jwt(phone, role);
+        long userId = claims.get("userId", Long.class);
+        return new Jwt(userId);
     }
 
     public SecretKey getSignInKey() {

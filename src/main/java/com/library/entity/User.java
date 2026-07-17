@@ -1,53 +1,89 @@
 package com.library.entity;
 
-import com.library.enums.Role;
 import com.library.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "username")
+        @UniqueConstraint(name = "uk_users_username", columnNames = "username")
 })
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails {
+@NoArgsConstructor
+public class User extends BaseEntity implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
-
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(nullable = false, length = 50)
     private String username;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
+
+    @Column(name = "full_name", nullable = false, length = 150)
+    private String fullName;
+
+    @Column(name = "phone_number", length = 20)
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(nullable = false, length = 20)
+    private UserStatus status = UserStatus.ACTIVE;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private UserStatus status;
-
-    @Column(name = "visible", nullable = false)
-    private boolean visible;
+    @Column(name = "last_login_at")
+    private Instant lastLoginAt;
 
     @Override
-    @NonNull
+    @Transient
+    @NullMarked
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(role);
+        return role.getPermissions();
+    }
+
+    @Override
+    @Transient
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    @Override
+    @Transient
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonLocked() {
+        return status != UserStatus.BLOCKED;
+    }
+
+    @Override
+    @Transient
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isEnabled() {
+        return status == UserStatus.ACTIVE;
     }
 }
