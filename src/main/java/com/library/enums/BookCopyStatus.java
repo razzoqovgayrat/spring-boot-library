@@ -4,6 +4,5 @@ public enum BookCopyStatus {
     AVAILABLE,
     BORROWED,
     RESERVED,
-    LOST,
-    MAINTENANCE
+    LOST
 }

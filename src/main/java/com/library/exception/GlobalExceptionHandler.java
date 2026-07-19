@@ -9,7 +9,6 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,13 +18,33 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ApiResponse<Void> handleAppBadRequestException(ResourceNotFoundException e) {
+    public ApiResponse<Void> handleResourceNotFoundException(ResourceNotFoundException e) {
         return ApiResponse.error(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
     @ExceptionHandler(MemberNotFoundException.class)
     public ApiResponse<Void> handleMemberNotFoundException(MemberNotFoundException e) {
         return ApiResponse.error(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    public ApiResponse<Void> handleInvalidRefreshTokenException(InvalidRefreshTokenException e) {
+        return ApiResponse.error(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(UserInactiveException.class)
+    public ApiResponse<Void> handleUserInactiveException(UserInactiveException e) {
+        return ApiResponse.error(HttpStatus.FORBIDDEN, e.getMessage());
+    }
+
+    @ExceptionHandler(BookNotAvailableException.class)
+    public ApiResponse<Void> handleBookNotAvailableException(BookNotAvailableException e) {
+        return ApiResponse.error(HttpStatus.CONFLICT, e.getMessage());
+    }
+
+    @ExceptionHandler(BorrowNotAllowedException.class)
+    public ApiResponse<Void> handleBorrowNotAllowedException(BorrowNotAllowedException e) {
+        return ApiResponse.error(HttpStatus.FORBIDDEN, e.getMessage());
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
@@ -65,6 +84,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ApiResponse<Void> handleAccessDenied(AccessDeniedException ex) {
+        return ApiResponse.error(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+    @ExceptionHandler(BusinessRuleViolationException.class)
+    public ApiResponse<Void> handleBusinessRuleViolationException(BusinessRuleViolationException ex) {
         return ApiResponse.error(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 

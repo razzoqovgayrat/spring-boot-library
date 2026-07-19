@@ -31,7 +31,7 @@ public abstract class BaseEntity {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @Column(name = "deleted_by")
+    @Column(name = "updated_by")
     private String updatedBy;
 
     @Column(name = "deleted_at")

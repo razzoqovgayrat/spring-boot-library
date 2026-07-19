@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface BookRepository extends JpaRepository<Book, Long> {
     boolean existsByIsbn(String isbn);
 
@@ -20,7 +22,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                     select distinct b from Book b
                     left join b.authors a
                     left join b.categories c
-                    where (:title is null or lower(b.title) like lower(concat('%', :title, '%')))
+                    where b.deletedAt is null
+                      and (:title is null or lower(b.title) like lower(concat('%', :title, '%')))
                       and (:authorName is null or lower(a.fullName) like lower(concat('%', :authorName, '%')))
                       and (:categoryName is null or lower(c.name) like lower(concat('%', :categoryName, '%')))
                     """,
@@ -28,7 +31,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                     select count(distinct b) from Book b
                     left join b.authors a
                     left join b.categories c
-                    where (:title is null or lower(b.title) like lower(concat('%', :title, '%')))
+                    where b.deletedAt is null
+                      and (:title is null or lower(b.title) like lower(concat('%', :title, '%')))
                       and (:authorName is null or lower(a.fullName) like lower(concat('%', :authorName, '%')))
                       and (:categoryName is null or lower(c.name) like lower(concat('%', :categoryName, '%')))
                     """
@@ -39,4 +43,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             @Param("categoryName") String categoryName,
             Pageable pageable
     );
+
+    Optional<Book> getByIdAndDeletedAtIsNull(Long id);
+
+    boolean existsByIsbnAndIdNot(String isbn, Long id);
 }
