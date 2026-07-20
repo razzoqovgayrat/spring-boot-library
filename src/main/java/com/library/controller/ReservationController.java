@@ -35,7 +35,7 @@ public class ReservationController {
 
     @Operation(summary = "Navbatni bekor qilish")
     @PostMapping("/{id}")
-    @PreAuthorize("hasAuthority('" + Permission.Fields.RESERVATION_DELETE + "')")
+    @PreAuthorize("hasAuthority('" + Permission.Fields.RESERVATION_CANCEL + "')")
     public ApiResponse<Void> cancel(@PathVariable Long id) {
         return reservationService.cancel(id);
     }

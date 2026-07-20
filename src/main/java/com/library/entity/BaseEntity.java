@@ -28,9 +28,11 @@ public abstract class BaseEntity {
     @Column(updatable = false)
     private String createdBy;
 
+    @LastModifiedDate
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @LastModifiedBy
     @Column(name = "updated_by")
     private String updatedBy;
 

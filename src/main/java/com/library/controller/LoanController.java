@@ -36,7 +36,7 @@ public class LoanController {
 
     @Operation(summary = "Qaytarish")
     @PostMapping("/{id}")
-    @PreAuthorize("hasAuthority('" + Permission.Fields.LOAN_DELETE + "')")
+    @PreAuthorize("hasAuthority('" + Permission.Fields.LOAN_RETURN + "')")
     public ApiResponse<Void> returnLoan(@PathVariable Long id) {
         return loanService.returnLoan(id);
     }

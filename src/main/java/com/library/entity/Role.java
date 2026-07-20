@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "roles")
 @Getter
 @Setter
 @Builder
@@ -21,6 +22,7 @@ public class Role {
     private String name;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "role_permission", joinColumns = @JoinColumn(name = "role_id"))
+    @Column(name = "permission")
     @Enumerated(EnumType.STRING)
     private Set<Permission> permissions = new HashSet<>();
 }

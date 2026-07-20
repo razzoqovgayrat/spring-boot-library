@@ -16,6 +16,7 @@ import com.library.repository.SessionRepository;
 import com.library.repository.UserRepository;
 import com.library.util.OpaqueUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,6 +37,9 @@ public class AuthService {
     private final SessionRepository sessionRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+    @Value("${app.refreshTokenLiveTime}")
+    private int refreshTokenLiveTime;
 
     @Transactional
     public ApiResponse<UserResponse> login(LoginRequest loginRequest, String deviceName) {
@@ -86,10 +90,15 @@ public class AuthService {
             throw new InvalidRefreshTokenException("Refresh token is wrong");
         }
 
+        if (session.getLastUsedAt().plusDays(refreshTokenLiveTime).isBefore(LocalDateTime.now())) {
+            throw new InvalidRefreshTokenException("Session has expired please login");
+        }
+
         User user = session.getUser();
         if (user.getStatus() != UserStatus.ACTIVE) {
             throw new InvalidRefreshTokenException("User is not ACTIVE");
         }
+
 
         String newAccessToken = jwtService.encode(user);
         String newRefreshToken = OpaqueUtil.generateToken();

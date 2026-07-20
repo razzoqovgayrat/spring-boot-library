@@ -35,6 +35,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
+    @Builder.Default
     private UserStatus status = UserStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.EAGER)

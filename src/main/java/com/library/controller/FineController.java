@@ -39,14 +39,14 @@ public class FineController {
 
     @Operation(summary = "Jarimani to'lash")
     @PostMapping("/{id}/pay")
-    @PreAuthorize("hasAuthority('" + Permission.Fields.FINE_CREATE + "')")
+    @PreAuthorize("hasAuthority('" + Permission.Fields.FINE_PAY + "')")
     public ApiResponse<FineResponse> pay(@PathVariable Long id) {
         return fineService.pay(id);
     }
 
     @Operation(summary = "Jarimani kechirish")
     @PostMapping("/{id}/waive")
-    @PreAuthorize("hasAuthority('" + Permission.Fields.FINE_DELETE + "')")
+    @PreAuthorize("hasAuthority('" + Permission.Fields.FINE_UPDATE + "')")
     public ApiResponse<FineResponse> waive(@PathVariable Long id, @Valid @RequestBody FineWaiveRequest request) {
         return fineService.waive(id, request);
     }

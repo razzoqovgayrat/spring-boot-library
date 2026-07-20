@@ -43,17 +43,16 @@ public enum Permission implements GrantedAuthority {
     @FieldNameConstants.Include LOAN_CREATE,
     @FieldNameConstants.Include LOAN_UPDATE,
     @FieldNameConstants.Include LOAN_READ,
-    @FieldNameConstants.Include LOAN_DELETE,
+    @FieldNameConstants.Include LOAN_RETURN,
 
-    @FieldNameConstants.Include FINE_CREATE,
+    @FieldNameConstants.Include FINE_PAY,
     @FieldNameConstants.Include FINE_UPDATE,
     @FieldNameConstants.Include FINE_READ,
-    @FieldNameConstants.Include FINE_DELETE,
 
     @FieldNameConstants.Include RESERVATION_CREATE,
     @FieldNameConstants.Include RESERVATION_UPDATE,
     @FieldNameConstants.Include RESERVATION_READ,
-    @FieldNameConstants.Include RESERVATION_DELETE;
+    @FieldNameConstants.Include RESERVATION_CANCEL;
 
     @Override
     public String getAuthority() {

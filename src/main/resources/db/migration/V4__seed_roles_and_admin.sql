@@ -1,56 +1,60 @@
 -- ============================================================
--- V4: Seed — default rollar, permission'lar, birinchi ADMIN
+-- V4: Seed — ADMIN/LIBRARIAN rollari (yangi Permission enum'ga mos),
+-- birinchi ADMIN. Faqat DEV/DEMO uchun.
 -- ============================================================
--- Diqqat: bu migratsiya faqat DEV/DEMO muhitida shu ko'rinishda
--- qoldiriladi. PRODUCTION'da parolni migratsiya faylida saqlash
--- yaxshi amaliyot emas — real loyihada admin akkaunt alohida,
--- xavfsizroq usulda (masalan bir martalik setup script/CLI orqali)
--- yaratiladi.
 
-INSERT INTO roles (name) VALUES ('ADMIN'), ('LIBRARIAN');
+INSERT INTO roles (name)
+VALUES ('ADMIN'),
+       ('LIBRARIAN');
 
--- ADMIN — hamma narsaga ruxsat
+-- ADMIN — barcha 40 ta permission
 INSERT INTO role_permission (role_id, permission)
 SELECT id, permission
-FROM roles, (VALUES
-                 ('AUTHOR_WRITE'), ('CATEGORY_WRITE'), ('BOOK_WRITE'), ('BOOK_COPY_WRITE'),
-                 ('MEMBER_WRITE'), ('MEMBER_STATUS_MANAGE'),
-                 ('LOAN_MANAGE'), ('RESERVATION_MANAGE'),
-                 ('FINE_PAY'), ('FINE_WAIVE'),
-                 ('USER_MANAGE'), ('ROLE_MANAGE')
-) AS p(permission)
+FROM roles,
+     (VALUES ('USER_CREATE'),
+             ('USER_READ'),
+             ('USER_UPDATE'),
+             ('USER_DELETE'),
+             ('AUTHOR_CREATE'),
+             ('AUTHOR_READ'),
+             ('AUTHOR_UPDATE'),
+             ('AUTHOR_DELETE'),
+             ('CATEGORY_CREATE'),
+             ('CATEGORY_READ'),
+             ('CATEGORY_UPDATE'),
+             ('CATEGORY_DELETE'),
+             ('BOOK_CREATE'),
+             ('BOOK_READ'),
+             ('BOOK_UPDATE'),
+             ('BOOK_DELETE'),
+             ('ROLE_CREATE'),
+             ('ROLE_READ'),
+             ('ROLE_UPDATE'),
+             ('ROLE_DELETE'),
+             ('BOOK_COPY_CREATE'),
+             ('BOOK_COPY_READ'),
+             ('BOOK_COPY_UPDATE'),
+             ('BOOK_COPY_DELETE'),
+             ('MEMBER_CREATE'),
+             ('MEMBER_READ'),
+             ('MEMBER_UPDATE'),
+             ('MEMBER_DELETE'),
+             ('LOAN_CREATE'),
+             ('LOAN_READ'),
+             ('LOAN_UPDATE'),
+             ('LOAN_RETURN'),
+             ('FINE_PAY'),
+             ('FINE_READ'),
+             ('FINE_UPDATE'),
+             ('RESERVATION_CREATE'),
+             ('RESERVATION_READ'),
+             ('RESERVATION_UPDATE'),
+             ('RESERVATION_CANCEL')) AS p(permission)
 WHERE roles.name = 'ADMIN';
 
--- LIBRARIAN — kundalik operatsion ishlar, ADMIN-only narsalarsiz
--- (MEMBER_STATUS_MANAGE, FINE_WAIVE, USER_MANAGE, ROLE_MANAGE yo'q)
-INSERT INTO role_permission (role_id, permission)
-SELECT id, permission
-FROM roles, (VALUES
-                 ('AUTHOR_WRITE'), ('CATEGORY_WRITE'), ('BOOK_WRITE'), ('BOOK_COPY_WRITE'),
-                 ('MEMBER_WRITE'),
-                 ('LOAN_MANAGE'), ('RESERVATION_MANAGE'),
-                 ('FINE_PAY')
-) AS p(permission)
-WHERE roles.name = 'LIBRARIAN';
-
--- Birinchi ADMIN — tizimga kirish uchun boshqa hech kim yo'q, shuning
--- uchun kamida bitta ADMIN oldindan seed qilinishi shart.
---
--- password_hash pastdagi qiymat PLACEHOLDER. Haqiqiy BCrypt hash bilan
--- almashtiring, masalan quyidagi kichik Java kod bilan generatsiya qiling:
---
---   new BCryptPasswordEncoder().encode("sizning_parolingiz")
---
--- yoki https://bcrypt-generator.com kabi ishonchli vositadan foydalaning
--- (faqat DEV muhitida, production parolni hech qachon shunday saytda
--- generatsiya qilmang).
-INSERT INTO users (username, password_hash, full_name, status, role_id, created_at, version)
-SELECT
-    'admin',
-    '$2a$10$REPLACE_THIS_WITH_REAL_BCRYPT_HASH_BEFORE_DEPLOY',
-    'Bosh Administrator',
-    'ACTIVE',
-    id,
-    now(),
-    0
-FROM roles WHERE name = 'ADMIN';
+-- Birinchi ADMIN. password_hash — PLACEHOLDER, deploy'dan oldin
+-- BCryptPasswordEncoder().encode("...") bilan almashtiring.
+INSERT INTO users (created_at, created_by, version, full_name, password_hash, phone_number, status, username, role_id)
+SELECT now(), 'ROLE_ADMIN', 1, 'Ali Aliyev', '$2a$12$TYNxvbwlkimBiavThIMUCOOvZK3kpbeZGxy40EGIgZOO7TycgBruG', '+998934445566', 'ACTIVE', 'ali@gmail.com', id
+FROM roles
+WHERE name = 'ADMIN';
