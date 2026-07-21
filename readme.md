@@ -38,7 +38,7 @@ Kutubxonada kitoblar (metadata) va ularning fizik nusxalari (copy) bir-biridan a
 
 | | Texnologiya                                                                   | Vazifasi |
 |---|-------------------------------------------------------------------------------|---|
-| ![Java]([https://cdn.simpleicons.org/openjdk/ED8B00](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/java.png)) | [**Java 21**](https://openjdk.org/projects/jdk/21/)                           | Asosiy til |
+| <img height="50" src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/java.png"> | [**Java 21**](https://openjdk.org/projects/jdk/21/)                           | Asosiy til |
 | ![Spring](https://cdn.simpleicons.org/spring/6DB33F) | [**Spring Boot**](https://spring.io/projects/spring-boot)                     | Ilova karkasi |
 | ![Spring Security](https://cdn.simpleicons.org/springsecurity/6DB33F) | [**Spring Security**](https://spring.io/projects/spring-security)             | Autentifikatsiya/avtorizatsiya |
 | ![PostgreSQL](https://cdn.simpleicons.org/postgresql/4169E1) | [**PostgreSQL**](https://www.postgresql.org/)                                 | Ma'lumotlar bazasi |
@@ -47,7 +47,7 @@ Kutubxonada kitoblar (metadata) va ularning fizik nusxalari (copy) bir-biridan a
 | 🔑 | [**JWT**](https://jwt.io/) + Opaque refresh token                             | Token-based auth |
 | ⏱ | [**ShedLock**](https://github.com/lukas-krecan/ShedLock)                      | Distributed scheduler lock |
 | ![Swagger](https://cdn.simpleicons.org/swagger/85EA2D) | [**springdoc-openapi**](https://springdoc.org/)                               | API hujjatlashtirish |
-| ![Lombok]([https://cdn.simpleicons.org/lombok/CC0000](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/lombok.png)) | [**Lombok**](https://projectlombok.org/)                                      | Boilerplate kamaytirish |
+| <img height="50" src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/lombok.png">  | [**Lombok**](https://projectlombok.org/)                                      | Boilerplate kamaytirish |
 | ![Maven](https://cdn.simpleicons.org/apachemaven/C71A36) | [**Maven**](https://maven.apache.org/)                                        | Build tool |
 
 ## Arxitektura
@@ -72,9 +72,9 @@ com.library
 Tizimga faqat xodimlar (`ADMIN`, `LIBRARIAN`) kiradi. A'zolar (`Member`) o'zi login qilmaydi — barcha amallarni LIBRARIAN ular nomidan bajaradi.
 
 ```
-POST /api/auth/login        → JWT access + opaque refresh token
-POST /api/auth/refresh
-POST /api/auth/logout
+POST /auth/login        → JWT access + opaque refresh token
+POST /auth/refresh
+POST /auth/logout
 ```
 
 Ruxsatlar **permission-based** (`Role → Permission[]`), `@PreAuthorize` orqali nazorat qilinadi.
@@ -84,8 +84,8 @@ Ruxsatlar **permission-based** (`Role → Permission[]`), `@PreAuthorize` orqali
 ```
 Author ─┐
         ├─< Book >─┬─ Category
-BookCopy ┘          │
-   │                 │
+BookCopy ┘         │
+   │               │
    └─< Loan >── Member ──< Reservation
                  │
                  └────< Fine
@@ -154,12 +154,12 @@ Swagger UI: **`http://localhost:8080/swagger-ui.html`**
 
 | Modul | Yo'l | Ruxsat |
 |---|---|---|
-| Auth | `/api/auth/**` | public / authenticated |
-| User, Role | `/api/users`, `/api/roles` | `ADMIN` |
-| Book, Author, Category | `/api/books`, `/api/authors`, `/api/categories` | o'qish — hamma, yozish — `LIBRARIAN` |
-| Member | `/api/members` | `ADMIN`, `LIBRARIAN` |
-| Loan, Reservation | `/api/loans`, `/api/reservations` | `LIBRARIAN` |
-| Fine | `/api/fines` | to'lash `LIBRARIAN`, kechirish `ADMIN` |
+| Auth | `/auth/**` | public / authenticated |
+| User, Role | `/users`, `/roles` | `ADMIN` |
+| Book, Author, Category | `/books`, `/authors`, `/categories` | o'qish — hamma, yozish — `LIBRARIAN` |
+| Member | `/members` | `ADMIN`, `LIBRARIAN` |
+| Loan, Reservation | `/loans`, `/reservations` | `LIBRARIAN` |
+| Fine | `/fines` | to'lash `LIBRARIAN`, kechirish `ADMIN` |
 
 Javob formati:
 
