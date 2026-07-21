@@ -44,8 +44,8 @@ Kutubxonada kitoblar (metadata) va ularning fizik nusxalari (copy) bir-biridan a
 | ![PostgreSQL](https://cdn.simpleicons.org/postgresql/4169E1) | [**PostgreSQL**](https://www.postgresql.org/)                                 | Ma'lumotlar bazasi |
 | ![Hibernate](https://cdn.simpleicons.org/hibernate/59666C) | [**Spring Data JPA / Hibernate**](https://spring.io/projects/spring-data-jpa) | ORM |
 | ![Flyway](https://cdn.simpleicons.org/flyway/CC0200) | [**Flyway**](https://flywaydb.org/)                                           | Schema migratsiyasi |
-| 🔑 | [**JWT**](https://jwt.io/) + Opaque refresh token                             | Token-based auth |
-| ⏱ | [**ShedLock**](https://github.com/lukas-krecan/ShedLock)                      | Distributed scheduler lock |
+| <img height="50" src="https://img.icons8.com/?size=256&id=rHpveptSuwDz&format=png"> | [**JWT**](https://jwt.io/) + Opaque refresh token                             | Token-based auth |
+| <img height="50" src="https://uxwing.com/wp-content/themes/uxwing/download/time-and-date/lock-time-icon.png"> | [**ShedLock**](https://github.com/lukas-krecan/ShedLock)                      | Distributed scheduler lock |
 | ![Swagger](https://cdn.simpleicons.org/swagger/85EA2D) | [**springdoc-openapi**](https://springdoc.org/)                               | API hujjatlashtirish |
 | <img height="50" src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/lombok.png">  | [**Lombok**](https://projectlombok.org/)                                      | Boilerplate kamaytirish |
 | ![Maven](https://cdn.simpleicons.org/apachemaven/C71A36) | [**Maven**](https://maven.apache.org/)                                        | Build tool |
