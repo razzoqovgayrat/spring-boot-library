@@ -4,7 +4,7 @@
 
 Production-darajadagi backend patternlarni (tranzaksiyalar, concurrency, scheduled job'lar, state machine) mashq qilish uchun qurilgan kutubxona boshqaruv API'si.
 
-[![Java](https://img.shields.io/badge/Java-17-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/17/)
+[![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/21/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3-6DB33F?style=flat-square&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Flyway](https://img.shields.io/badge/Flyway-Migrations-CC0200?style=flat-square&logo=flyway&logoColor=white)](https://flywaydb.org/)
@@ -36,19 +36,19 @@ Kutubxonada kitoblar (metadata) va ularning fizik nusxalari (copy) bir-biridan a
 
 ## Texnologiyalar
 
-| | Texnologiya | Vazifasi |
-|---|---|---|
-| ![Java](https://cdn.simpleicons.org/openjdk/ED8B00) | [**Java 17**](https://openjdk.org/projects/jdk/17/) | Asosiy til |
-| ![Spring](https://cdn.simpleicons.org/spring/6DB33F) | [**Spring Boot**](https://spring.io/projects/spring-boot) | Ilova karkasi |
-| ![Spring Security](https://cdn.simpleicons.org/springsecurity/6DB33F) | [**Spring Security**](https://spring.io/projects/spring-security) | Autentifikatsiya/avtorizatsiya |
-| ![PostgreSQL](https://cdn.simpleicons.org/postgresql/4169E1) | [**PostgreSQL**](https://www.postgresql.org/) | Ma'lumotlar bazasi |
+| | Texnologiya                                                                   | Vazifasi |
+|---|-------------------------------------------------------------------------------|---|
+| ![Java]([https://cdn.simpleicons.org/openjdk/ED8B00](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/java.png)) | [**Java 21**](https://openjdk.org/projects/jdk/21/)                           | Asosiy til |
+| ![Spring](https://cdn.simpleicons.org/spring/6DB33F) | [**Spring Boot**](https://spring.io/projects/spring-boot)                     | Ilova karkasi |
+| ![Spring Security](https://cdn.simpleicons.org/springsecurity/6DB33F) | [**Spring Security**](https://spring.io/projects/spring-security)             | Autentifikatsiya/avtorizatsiya |
+| ![PostgreSQL](https://cdn.simpleicons.org/postgresql/4169E1) | [**PostgreSQL**](https://www.postgresql.org/)                                 | Ma'lumotlar bazasi |
 | ![Hibernate](https://cdn.simpleicons.org/hibernate/59666C) | [**Spring Data JPA / Hibernate**](https://spring.io/projects/spring-data-jpa) | ORM |
-| ![Flyway](https://cdn.simpleicons.org/flyway/CC0200) | [**Flyway**](https://flywaydb.org/) | Schema migratsiyasi |
-| 🔑 | [**JWT**](https://jwt.io/) + Opaque refresh token | Token-based auth |
-| ⏱ | [**ShedLock**](https://github.com/lukas-krecan/ShedLock) | Distributed scheduler lock |
-| ![Swagger](https://cdn.simpleicons.org/swagger/85EA2D) | [**springdoc-openapi**](https://springdoc.org/) | API hujjatlashtirish |
-| ![Lombok](https://cdn.simpleicons.org/lombok/CC0000) | [**Lombok**](https://projectlombok.org/) | Boilerplate kamaytirish |
-| ![Maven](https://cdn.simpleicons.org/apachemaven/C71A36) | [**Maven**](https://maven.apache.org/) | Build tool |
+| ![Flyway](https://cdn.simpleicons.org/flyway/CC0200) | [**Flyway**](https://flywaydb.org/)                                           | Schema migratsiyasi |
+| 🔑 | [**JWT**](https://jwt.io/) + Opaque refresh token                             | Token-based auth |
+| ⏱ | [**ShedLock**](https://github.com/lukas-krecan/ShedLock)                      | Distributed scheduler lock |
+| ![Swagger](https://cdn.simpleicons.org/swagger/85EA2D) | [**springdoc-openapi**](https://springdoc.org/)                               | API hujjatlashtirish |
+| ![Lombok]([https://cdn.simpleicons.org/lombok/CC0000](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/lombok.png)) | [**Lombok**](https://projectlombok.org/)                                      | Boilerplate kamaytirish |
+| ![Maven](https://cdn.simpleicons.org/apachemaven/C71A36) | [**Maven**](https://maven.apache.org/)                                        | Build tool |
 
 ## Arxitektura
 
