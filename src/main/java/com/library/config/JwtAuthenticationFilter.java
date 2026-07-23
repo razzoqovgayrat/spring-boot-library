@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         AntPathMatcher matcher = new AntPathMatcher();
-        return Arrays.stream(SecurityConfig.AUTH_WHITELIST)
+        return Arrays.stream(SecurityConfig.WHITE_LIST)
                 .anyMatch(p -> matcher.match(p, request.getServletPath()));
     }
 
